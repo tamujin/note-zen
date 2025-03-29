@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, Tag, Typography, Space, Tooltip } from 'antd';
 import { EditOutlined, DeleteOutlined, FieldTimeOutlined } from '@ant-design/icons';
 import { Note } from '../types';
 import { useTheme } from '../context/ThemeContext';
 import dayjs from 'dayjs';
 import ReactMarkdown from 'react-markdown';
+import { Button, Modal } from 'antd';
+import { EyeOutlined } from '@ant-design/icons';
 
 const { Text, Paragraph } = Typography;
 
@@ -18,6 +20,20 @@ interface NoteCardProps {
 const NoteCard: React.FC<NoteCardProps> = ({ note, onEdit, onDelete, isGrid }) => {
   const { currentTheme } = useTheme();
   const { id, title, content, tags, updatedAt, isMarkdown } = note;
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   // Format the date
   const formattedDate = dayjs(updatedAt).format('MMM D, YYYY h:mm A');
@@ -40,6 +56,9 @@ const NoteCard: React.FC<NoteCardProps> = ({ note, onEdit, onDelete, isGrid }) =
         </Tooltip>,
         <Tooltip title="Delete" key="delete">
           <DeleteOutlined key="delete" onClick={() => onDelete(id)} />
+        </Tooltip>,
+        <Tooltip title="View" key="view">
+          <Button type="link" icon={<EyeOutlined />} onClick={showModal} />
         </Tooltip>,
       ]}
     >
@@ -70,6 +89,14 @@ const NoteCard: React.FC<NoteCardProps> = ({ note, onEdit, onDelete, isGrid }) =
             </Tag>
           ))}
       </div>
+
+      <Modal title={title || 'Untitled Note'} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+        {isMarkdown ? (
+          <ReactMarkdown>{content}</ReactMarkdown>
+        ) : (
+          <Paragraph>{content}</Paragraph>
+        )}
+      </Modal>
     </Card>
   );
 };

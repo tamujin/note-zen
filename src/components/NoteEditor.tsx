@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Button, Space, Tabs, Tag, Tooltip, Typography } from 'antd';
-import { PlusOutlined, CheckOutlined, CloseOutlined, MarkdownOutlined, FileTextOutlined } from '@ant-design/icons';
+import { PlusOutlined, CheckOutlined, CloseOutlined, FileTextOutlined } from '@ant-design/icons';
 import { Note } from '../types';
 import ReactMarkdown from 'react-markdown';
 
@@ -86,7 +86,7 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ note, onSave, onCancel }) => {
         <Space>
           <Tooltip title={isMarkdown ? 'Switch to Plain Text' : 'Switch to Markdown'}>
             <Button
-              icon={isMarkdown ? <FileTextOutlined /> : <MarkdownOutlined />}
+              icon={isMarkdown ? <FileTextOutlined /> : <FileTextOutlined />}
               onClick={toggleMarkdown}
             >
               {isMarkdown ? 'Plain Text' : 'Markdown'}
